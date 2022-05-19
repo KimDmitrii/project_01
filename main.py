@@ -1,5 +1,5 @@
 # импорты
-from  configparser import ConfigParser
+from configparser import ConfigParser
 
 
 # глобальные переменные
@@ -10,10 +10,17 @@ SAVES = {}
 # SAVES = {('ivan', 'ai1'): [[]]}
 
 # функции
+
+# подписывайте, что делает эта функция
 def field():
     global FIELD
     pass
 
+# подписывайте, что делает эта функция
+def show_help():
+    pass
+
+# подписывайте, что делает эта функция
 def read():
     global PLAYERS, SAVES
     config = ConfigParser()
@@ -27,6 +34,8 @@ def read():
         return True if config['General']['first'] == 'yes' else False
     else:
         raise FileExistsError
+
+# подписывайте, что делает эта функция
 def save():
     config = ConfigParser()
     config['Scores'] = {name: ','.join(str(n) for n in score)
@@ -37,6 +46,7 @@ def save():
     config['Genera']['first'] = 'no'
     with open('data.ini', 'w', encoding='utf-8') as config_file:
         config.write(config_file)
+
 
 # чтение .ini файла
 if read():
@@ -51,4 +61,23 @@ while True:
         break
 
     # ввод имени игрока
-1
+
+
+# commit messages должны быть:
+#   а) краткими
+#   б) на естественном языке
+#   в) без кода или псевдокода
+# также, в них можно писать на русском
+
+# вот это сообщение
+    # add functions:
+    # read() - read data.ini (name: score from PLAYERS, name: field from SAVES)
+    #
+    # save() - save data.ini (name: score in PLAYERS,
+    # name: field in SAVES)
+    # when save then ['Genera']['first'] = 'no'
+
+# следует переписать
+    # функции read, save для data.ini
+
+# в commit message этого достаточно
