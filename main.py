@@ -1,83 +1,57 @@
-# импорты
-from configparser import ConfigParser
+# Модуль верхнего уровня приложения Крестики-Нолики
+# Copyright by Gennadiy S. aka GennDALF
+
+from players import *
+from help import show_help, show_message
+
+# приветствие
+show_message('КРЕСТИКИ-НОЛИКИ')
 
 
-# глобальные переменные
-FIELD = [['']*3 for _ in range(3)]
-PLAYERS = {'Ivan': [1,1,0]}
-# PLAYERS = {'Ivan': [1,1,0]}
-SAVES = {}
-# SAVES = {('ivan', 'ai1'): [[]]}
-
-# функции
-
-# подписывайте, что делает эта функция
-def field():
-    global FIELD
-    pass
-
-# подписывайте, что делает эта функция
-def show_help():
-    pass
-
-# подписывайте, что делает эта функция
-def read():
-    global PLAYERS, SAVES
-    config = ConfigParser()
-    if config.read('data.ini', encoding='utf-8'):
-        PLAYERS = {name: [int(n) for n in score.split(',')]
-                   for name, score in config['Scores'].items()}
-        SAVES = {tuple(name.split(';')):
-                     [[' ' if c == '-' else c for c in field[i:i+3]]
-                      for i in range(0,9,3)]
-                 for name, field in config['Saves'].items()}
-        return True if config['General']['first'] == 'yes' else False
-    else:
-        raise FileExistsError
-
-# подписывайте, что делает эта функция
-def save():
-    config = ConfigParser()
-    config['Scores'] = {name: ','.join(str(n) for n in score)
-                        for name, score in PLAYERS.items()}
-    config['Saves'] = {';'.join(name):
-                           ''.join(['-' if c == ' ' else c for r in field for c in r])
-                       for name, field in SAVES.items()}
-    config['Genera']['first'] = 'no'
-    with open('data.ini', 'w', encoding='utf-8') as config_file:
-        config.write(config_file)
-
-
-# чтение .ini файла
-if read():
-    show_help()
 
 # запуск суперцикла
 while True:
-    command = input()
+    command = input('_> ')
 
     if command in ('quit', 'выход'):
         # обработка завершения работы приложения
         break
+    elif command in ('new', 'yes', 'новая', 'да'):
+        # есть ли текущий игрок
+        if not PLAYER:
+            # запрос имени игрока
+            player_name(PLAYER)
+        else:
+            game_mode = input('choose game mode(ai, human = ')
+            if game_mode == 'ai':
+                # Выбор уровня сложности
+                difficult_lvl()
+                PLAYER = PLAYER + (difficult_lvl(), )
+                player_name(bot_mode=difficult_lvl())
+                if all(k in SAVES for k in (PLAYER[0], PLAYER[1])):
+                    print(f"Вам доступна сохраненная игра \n{PLAYER[0]} - {SAVES[PLAYER[0]]} \n{PLAYER[1]} - {SAVES[PLAYER[1]]}"
+                        f"{input('Загрузить игру?(да/нет): ')}")
+                else:
+                    # далее проверка да/нет
+                    # если да, то загружаем игру
+                    # если нет, то переходим к выбору сложности
+                    pass
+                else:
+                    # функция выбора символа
+                    # старт партии
+                    pass
+            elif game_mode == 'human':
+                player_name(PLAYER)
+                if all(k in SAVES for k in (PLAYER[0], PLAYER[1])):
+                    print(f"Вам доступна сохраненная игра \n{PLAYER[0]} - {SAVES[PLAYER[0]]} \n{PLAYER[1]} - {SAVES[PLAYER[1]]}"
+                          f"{input('Загрузить игру?(да/нет): ')}")
+                else:
+                    mark = input('Выберите символ для первого игрока(x, 0): ')
+                    # старт партии
 
-    # ввод имени игрока
-
-
-# commit messages должны быть:
-#   а) краткими
-#   б) на естественном языке
-#   в) без кода или псевдокода
-# также, в них можно писать на русском
-
-# вот это сообщение
-    # add functions:
-    # read() - read data.ini (name: score from PLAYERS, name: field from SAVES)
-    #
-    # save() - save data.ini (name: score in PLAYERS,
-    # name: field in SAVES)
-    # when save then ['Genera']['first'] = 'no'
-
-# следует переписать
-    # функции read, save для data.ini
-
-# в commit message этого достаточно
+# дописать скелет цикла
+# функции игроков
+# обработать запросы режима
+# выбор сложности
+# выбор символа
+# все до старта партии и вывод статистики
