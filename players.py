@@ -41,26 +41,29 @@ def save():
 
 # Выбор уровня сложности
 def difficult_lvl():
-    bot_mode=''
-    bot = input('Выберите уровень сложности(легкий/трудный) ').lower()
-    if bot == 'легкий':
-        bot_mode = 'ai1'
-    elif bot == 'трудный':
-        bot_mode = 'ai2'
+    # не нужна переменная bot_mode
+    bot = input('Выберите уровень сложности\n1 - легкий\n2 - трудный\n').lower()
+    if bot in ('1', 'легкий', 'л'):
+        return 'ai1'
+    elif bot in ('2', 'трудный', 'т'):
+        return 'ai2'
     else:
+        # только вывод сообщения и всё?
         print('Вы ввели неверную команду')
-    return bot_mode
+
 
 # Кто ходит первым
 def first_move():
     global PLAYER
-    move = input(f"Каким символом желает играть игрок {PLAYER[0]}(X(ходит первым) или O)? ")
-    if move == 'X':
+    move = input(f"Каким символом желает играть игрок {PLAYER[0]}\n(X (ходит первым) или O)?\n").lower()
+    if move == 'x':
         pass
-    elif move == 'O':
+    elif move == 'o':
         PLAYER = (PLAYER[1], PLAYER[0])
     else:
+        # только вывод сообщения и всё?
         print('Вы ввели неверный символ')
+
 
 # запись имен в PLAYER
 def player_name(bot_mode=''):
@@ -77,25 +80,34 @@ def player_name(bot_mode=''):
             # добавить имя второго игрока человека
             PLAYER = (PLAYER[0], input('Введите имя второго игрока ').lower())
 
+
 # выбор режима игры
 def mode():
     # зачем нужна переменная, которая используется один раз?
     return input('Выберите режим игры:\n1 - с ботом\n2 - двое игроков\n')
 
+
 # загрузка сохраненной игры
 def load_game():
     global PLAYER, SAVES
     if PLAYER in SAVES:
+        # после тире будет выведен список с вложенными списками – это то, чего вы хотите?
         print(f"Вам доступна сохраненная игра \n{PLAYER} - {SAVES[PLAYER]}")
-        choice = input('Загрузить игру?(да/нет): ')
-        if choice == 'да':
+        choice = input('Загрузить игру? ').lower()
+        # лучше учесть несколько вариантов для положительного ответа
+        if choice in ('yes', 'y', 'да', 'д'):
             # Загрузка игры
-        elif choice == 'нет':
             pass
+        # а для всех прочих реализовать вариант "нет"
+        else:
+            pass
+
 
 # вывод статистики текущего(-их) игрока(-ов)
 def show_stat():
     global PLAYER, PLAYERS
+    # это для отладки?
+    # просто не стоит переписывать глобальную переменную-кортеж вводом пользователя
     while PLAYER := input():
         if PLAYER in PLAYERS:
             print(f"Статистика побед, поражений и ничьих для - {PLAYER} - {PLAYERS[PLAYER]}")
@@ -104,3 +116,5 @@ def show_stat():
         PLAYER = tuple()
         print("Загрузить статистику другого игрока?(Нажмите Enter, если хотите выйти)")
 
+
+# в целом – хорошая работа, так держать
