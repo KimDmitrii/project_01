@@ -4,9 +4,8 @@
 from configparser import ConfigParser
 
 PLAYERS = {}
-# PLAYERS = {'Ivan': [1,1,0]}
+# PLAYERS = {'Ivan': [1,1,0], 'DIMA': [1,2,3], 'TANYA': [3,2,1]}
 PLAYER = tuple()
-
 SAVES = {}
 # SAVES = {('ivan', 'ai1'): [[]],
 #           ('ivan', 'oleg'): [[]]}
@@ -39,36 +38,69 @@ def save():
     with open('data.ini', 'w', encoding='utf-8') as config_file:
         config.write(config_file)
 
+
 # Выбор уровня сложности
 def difficult_lvl():
-    # может, лучше спросить про уровень сложности: лёгкий/трудный?
-    bot = input('Выберите бота(ai1, ai2): ')
-    return bot
+    bot_mode=''
+    bot = input('Выберите уровень сложности(легкий/трудный) ').lower()
+    if bot == 'легкий':
+        bot_mode = 'ai1'
+    elif bot == 'трудный':
+        bot_mode = 'ai2'
+    else:
+        print('Вы ввели неверную команду')
+    return bot_mode
 
 # Кто ходит первым
 def first_move():
-    # Здесь будет логика выбора первого хода
-    # далее использовать эту функцию в функции player_name() в последнем блоке else(строка 62),
-    # только я не знаю как
-    #    либо спросить пользователя, каким символом он играть хочет
-    #    либо "подкинуть монетку"
-    pass
+    global PLAYER
+    move = input(f"Каким символом желает играть игрок {PLAYER[0]}(x(ходит первым) или 0)? ")
+    if move == 'x':
+        pass
+    elif move == '0':
+        PLAYER = (PLAYER[1], PLAYER[0])
+    else:
+        print('Вы ввели неверный символ')
 
 # запись имен в PLAYER
 def player_name(bot_mode=''):
     global PLAYER
     # если имя игрока еще не вводилось
     if len(PLAYER) == 0:
-        PLAYER = (input().lower(), )
-    # если имя игрока еще вводилось
+        PLAYER = (input('Введите имя игрока ').lower(), )
+    # если имя игрока уже вводилось
     elif len(PLAYER) == 1:
         if bot_mode:
             # добавить имя бота с уровнем сложности
             PLAYER = (PLAYER[0], bot_mode)
         else:
             # добавить имя второго игрока человека
-            PLAYER = (PLAYER[0], input().lower())
-    else:
-        # здесь должна быть смена местами имён игроков в переменной PLAYER
-        # в зависимости от порядка хода (крестик первый)
-        pass
+            PLAYER = (PLAYER[0], input('Введите имя второго игрока ').lower())
+
+# выбор режима игры
+def mode():
+    game_mode = input('choose game mode(ai, human) = ')
+    return game_mode
+
+# загрузка сохраненной игры
+def load_game():
+    global PLAYER, SAVES
+    if PLAYER in SAVES:
+        print(f"Вам доступна сохраненная игра \n{PLAYER} - {SAVES[PLAYER]}")
+        choice = input('Загрузить игру?(да/нет): ')
+        if choice == 'да':
+            # Загрузка игры
+        elif choice == 'нет':
+            pass
+
+# вывод статистики текущего(-их) игрока(-ов)
+def show_stat():
+    global PLAYER, PLAYERS
+    while PLAYER := input():
+        if PLAYER in PLAYERS:
+            print(f"Статистика побед, поражений и ничьих для - {PLAYER} - {PLAYERS[PLAYER]}")
+        else:
+            print(f" Для игрока {PLAYER} пока нет статистики побед, поражений и ничьих")
+        PLAYER = tuple()
+        print("Загрузить статистику другого игрока?(Нажмите Enter, если хотите выйти)")
+
