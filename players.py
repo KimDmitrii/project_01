@@ -54,10 +54,10 @@ def difficult_lvl():
 # Кто ходит первым
 def first_move():
     global PLAYER
-    move = input(f"Каким символом желает играть игрок {PLAYER[0]}(x(ходит первым) или 0)? ")
-    if move == 'x':
+    move = input(f"Каким символом желает играть игрок {PLAYER[0]}(X(ходит первым) или O)? ")
+    if move == 'X':
         pass
-    elif move == '0':
+    elif move == 'O':
         PLAYER = (PLAYER[1], PLAYER[0])
     else:
         print('Вы ввели неверный символ')
@@ -79,8 +79,8 @@ def player_name(bot_mode=''):
 
 # выбор режима игры
 def mode():
-    game_mode = input('choose game mode(ai, human) = ')
-    return game_mode
+    # зачем нужна переменная, которая используется один раз?
+    return input('Выберите режим игры:\n1 - с ботом\n2 - двое игроков\n')
 
 # загрузка сохраненной игры
 def load_game():

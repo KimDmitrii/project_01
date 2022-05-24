@@ -26,8 +26,8 @@ while True:
             player_name()
         else:
             # выбор режима
-            mode()
-            if game_mode == 'ai':
+            game_mode = mode()
+            if game_mode in ('1', 'с ботом', 'бот'):
 
                 # загружаем игру
                 load_game()
@@ -40,7 +40,7 @@ while True:
 
                 # старт партии
 
-            elif game_mode == 'human':
+            elif game_mode in ('2', 'два игрока', 'двое'):
 
                 # Вводим имя второго игрока
                 player_name(bot_mode='')
