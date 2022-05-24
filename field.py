@@ -3,7 +3,7 @@
 
 FIELD = [['']*3 for _ in range(3)]
 
-# описать функцию: что она делает?
+# создание поля для игры
 def field():
     global FIELD
     pass
