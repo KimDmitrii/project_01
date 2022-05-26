@@ -1,9 +1,10 @@
 # Модуль с данными игроков Крестики-Нолики
 # Copyright by Kim S.
 
-from field import *
 from configparser import ConfigParser
-from help import MESSAGES, ANSWERS, show_message
+
+import field
+import help
 
 
 SCORES = {}
@@ -48,7 +49,7 @@ def player_name(bot_mode='', *, change_order=False):
     global PLAYER
     # если имя игрока еще не вводилось
     if len(PLAYER) == 0:
-        PLAYER = (input(MESSAGES[1]).lower(), )
+        PLAYER = (input(help.MESSAGES[1]).lower(),)
     # если имя игрока уже вводилось
     elif len(PLAYER) == 1:
         if bot_mode:
@@ -56,35 +57,32 @@ def player_name(bot_mode='', *, change_order=False):
             PLAYER = (PLAYER[0], bot_mode)
         else:
             # добавить имя второго игрока человека
-            PLAYER = (PLAYER[0], input(MESSAGES[2]).lower())
+            PLAYER = (PLAYER[0], input(help.MESSAGES[2]).lower())
     if change_order:
         PLAYER = (PLAYER[1], PLAYER[0])
-
-
-
 
 # выбор режима игры
 def mode():
     global PLAYER
     # запрос режима игры
     while True:
-        gm = input(MESSAGES[3]).lower()
-        if gm in ANSWERS[3]:
+        gm = input(help.MESSAGES[3]).lower()
+        if gm in help.ANSWERS[3]:
             break
     # если одиночная
-    if gm in ANSWERS[3][:3]:
+    if gm in help.ANSWERS[3][:3]:
         # есть ли сохранение для одиночной игры
-        if save := check_saves():
+        if save := field.check_saves():
             # восстановление уровня сложности и очередности из SAVES
             PLAYER = save
             return True
         # запрос уровня сложности
         while True:
-            dl = input(MESSAGES[4]).lower()
-            if dl in ANSWERS[4]:
+            dl = input(help.MESSAGES[4]).lower()
+            if dl in help.ANSWERS[4]:
                 break
         # запись имени бота
-        if dl in ANSWERS[4][:3]:
+        if dl in help.ANSWERS[4][:3]:
             dl = 'ai1'
         else:
             dl = 'ai2'
@@ -92,13 +90,13 @@ def mode():
     # если парная
     else:
         player_name()
-        if save := check_saves(single=False):
+        if save := field.check_saves(single=False):
             # восстановление уровня сложности и очередности из SAVES
             PLAYER = save
             return True
 
     # выбор очередности хода
-    if not (input(MESSAGES[5]).lower() in ANSWERS[5]):
+    if not (input(help.MESSAGES[5]).lower() in help.ANSWERS[5]):
         player_name(change_order=True)
 
 
@@ -106,15 +104,16 @@ def mode():
 def show_stat(current=True):
     global PLAYER, SCORES
     # имя текущего игрока должно заводиться в PLAYERS сразу после ввода
-    # а до ввода она просто не должна вызываться
-    # это вариант отработки сразу после окончания партии
+    # а до ввода эта функция просто не должна вызываться
+    # это не особо форматированный вариант вывода сразу после окончания партии
     if current:
         for p in PLAYER:
             if not p.startswith('ai'):
                 print(f"Статистика побед, поражений и ничьих для - {p} - {SCORES[p]}")
-    # это вариант для общей таблицы: первые десять результатов
+    # это вариант для общей таблицы: первые десять результатов из списка,
+    #   отсортированного по убыванию по количеству побед
     else:
-        show_message('ТАБЛИЦА РЕЗУЛЬТАТОВ')
+        help.show_message('ТАБЛИЦА РЕЗУЛЬТАТОВ')
         print('\t\tпобед\tпоражений\tничьих')
         for p in sorted(SCORES.items(),
                         key=lambda pair: pair[1][0],
