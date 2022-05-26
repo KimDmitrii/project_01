@@ -1,8 +1,8 @@
 # Модуль верхнего уровня приложения Крестики-Нолики
 # Copyright by Kim D.
 
-from players import *
-from help import show_help, show_message, MESSAGES, COMMANDS
+from players import PLAYER, mode, read_ini, show_stat, player_name
+from help import COMMANDS, MESSAGES, show_help, show_message
 
 # приветствие
 show_message('КРЕСТИКИ-НОЛИКИ')
@@ -33,14 +33,19 @@ while True:
             player_name()
         if mode():
             # продолжаем сохр партию
+            # ...
             # после завершения отобразить статистику
-            show_stat(current=True)
-            pass
+
+            # current=True – это параметр со значением по умолчанию,
+            #   мы передаём в этот параметр аргумент только если хотим
+            #   изменить значение по умолчанию
+            #   пересмотрите лекцию и примеры по функциям
+            show_stat()
         else:
-            pass
             # начинаем новую
+            # ...
             # после завершения отобразить статистику
-            show_stat(current=True)
+            show_stat()
 
 
 
