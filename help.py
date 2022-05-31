@@ -4,6 +4,7 @@
 from shutil import get_terminal_size as gts
 from math import floor, ceil
 
+import field
 
 MESSAGES = ('хотите начать новую партию? >',
             'введите имя игрока >',
@@ -17,14 +18,16 @@ MESSAGES = ('хотите начать новую партию? >',
 COMMANDS = {'quit': ('quit', 'выход'),
             'help': ('help', 'помощь', 'h', '?'),
             'scores': ('stat', 'таблица', 'статистика', 'rating', 'рейтинг'),
-            'new': ('new', 'yes', 'новая', 'да')}
+            'new': ('new', 'yes', 'новая', 'да'),
+            '': (),
+            }
 
 ANSWERS = (None,
            None,
            None,
            ('1', 'бот', 'б', '2', 'человек', 'ч'),
            ('1', 'легкий', 'л', 'трудный', '2', 'т'),
-           ('yes', 'да', 'y', 'д'),
+           ('yes', 'да', 'y', 'д', '1'),
            ('yes', 'да', 'y', 'д')
            )
 
@@ -37,7 +40,8 @@ h = f"""Правила игры:
 
 # вывод справки
 def show_help():
-    print(h)
+    # field.show_field(center=True)
+    print(h, end='\n\n')
 
 # вывод приветствия
 def show_message(text=''):
